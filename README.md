@@ -1,6 +1,6 @@
 # copy-older-than
 
-Node.js script that copies files from given source directory to a given destination directory while filtering out files older than the given date.
+Node.js script that copies files from given source directory to a given destination directory while filtering out files newer than the given date.
 
 To use it you must first install Node.js: https://nodejs.org/en/download/
 
