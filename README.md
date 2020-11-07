@@ -2,6 +2,8 @@
 
 Node.js script that copies files from given source directory to a given destination directory while filtering out files older than the given date.
 
+To use this script you must first install Node.js: https://nodejs.org/en/download/
+
 ## Usage:
 
 First make sure you know the path of your source and have an already created destination directory.
@@ -19,7 +21,7 @@ pause
 
 ### On Linux / Mac OS X:
 
-When you open "run-liunx-mac-osx.sh" in a text editor you will see this:
+When you open "run-linux-mac-osx.sh" in a text editor you will see this:
 ```
 #!/usr/bin/env bash
 node copyOlderThan.js /absolute/path/to/source/directory /absolute/path/to/destination/directory 2020-12-30
