@@ -12,16 +12,19 @@ Paths must be in absolute form (e.g on Windows "C:\path\to\source", or "/path/to
 ### On Windows:
 
 When you open "run-windows.bat" in a text editor (e.g notepad on Windows) you will see this:
-    node copyOlderThan.js C:\path\to\source\directory C:\path\to\destination\directory 2020-12-30
-    pause
+```
+node copyOlderThan.js C:\path\to\source\directory C:\path\to\destination\directory 2020-12-30
+pause
+```
 
 ### On Linux / Mac OS X:
 
 When you open "run-liunx-mac-osx.sh" in a text editor you will see this:
-    #!/usr/bin/env bash
-      node copyOlderThan.js /absolute/path/to/source/directory /absolute/path/to/destination/directory 2020-12-30
-      pause
-
+```
+#!/usr/bin/env bash
+node copyOlderThan.js /absolute/path/to/source/directory /absolute/path/to/destination/directory 2020-12-30
+pause
+```
 
 ### Editing the arguments
 
