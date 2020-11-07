@@ -40,3 +40,8 @@ The script saves the list of files it copied along with the date when it was cop
 
 The script copies all directories and files from the source directory to the destination directory according to the given arguments.
 It does not overwrite files or folders if they already exist under the destination directory.
+
+
+## Testing:
+
+The script has so far been tested on Windows and Ubuntu. Mac OS X compatibility is assumed as the script works on Ubuntu.

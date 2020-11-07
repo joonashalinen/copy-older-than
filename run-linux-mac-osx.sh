@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
-node copyOlderThan.js /absolute/path/to/source/directory /absolute/path/to/destination/directory 2020-12-30
-pause
+nodejs copyOlderThan.js /home/dev/copy-older-than/wordpress /home/dev/copy-older-than/wordpress-2 2020-12-30
+sleep 5

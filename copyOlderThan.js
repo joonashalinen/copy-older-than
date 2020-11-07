@@ -63,7 +63,7 @@ for (var i = 0; i < filePaths.length; i++) {
 return;
 
 function createFolder(pathName) {
-  //console.log("Creating folder at " + pathName + " ...");
+  console.log("Creating folder at " + pathName + " ...");
   fs.mkdirSync(pathName);
 }
 
@@ -73,7 +73,7 @@ function copyFile(path) {
   var fileExists = fs.existsSync(destination + pathFragment) // Make sure file doesn't already exist in destination before writing.
 
   if (!fileExists) {
-    //console.log("Writing " + destination + pathFragment + " ...");
+    console.log("Writing " + destination + pathFragment + " ...");
     fs.copyFileSync(path, destination + pathFragment);
     return true;
   }
