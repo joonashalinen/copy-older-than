@@ -1,6 +1,12 @@
 
 const fs = require('fs');
 const path = require('path');
+const readline = require('readline');
+
+const rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout
+});
 
 const source = process.argv[2];
 const destination = process.argv[3];
@@ -23,44 +29,70 @@ if (!youngestAllowedTime) {
   throw new Error("Invalid or missing date, date given was: '" + date + "'" );
 }
 
+var copyFileList = [];
+
 // Recursively read file paths from source.
 
 var filePaths = [];
 readDir(source, filePaths);
 
-// Create directories under destination.
-
-for (var i = 0; i < filePaths.length; i++) {
-  var filePath = filePaths[i].split(source)[1];
-
-  filePath = filePath.split(/[\/\\]/);
-  filePath.pop();
-
-  var rootPath = destination;
-  for (let i = 1; i < filePath.length; i++) {
-    var pathFragment = filePath[i];
-    var pathName = path.join(rootPath, pathFragment);
-
-    rootPath = pathName;
-    if (fs.existsSync(pathName)) {
-      continue;
-    } else {
-      createFolder(pathName);
-    }
-  }
-}
-
-// Copy files to destination folders.
+// Stage copy file list.
 
 for (var i = 0; i < filePaths.length; i++) {
   let path = filePaths[i];
-  var copied = copyFile(path);
-  if (copied) {
-    saveLog(path);
-  }
+  copyFile(path);
 }
 
-return;
+// Ask for user confirmation
+
+askForConfirmation();
+
+function askForConfirmation() {
+  rl.question('Please check the list of files to be written (or overwritten) above. Do you want to continue? [Y][N]', (answer) => {
+    if (answer.toLowerCase().includes("y")) {
+      rl.close();
+      createDirectories(); // Create directories under destination.
+      commitCopyingFiles(); // Copy files
+      console.log("Done"); // Finished
+      return;
+    } else if (answer.toLowerCase().includes("n")) {
+      process.exit(1);
+    }
+    askForConfirmation();
+  });
+}
+
+function commitCopyingFiles() {
+
+  for (var i = 0; i < copyFileList.length; i++) {
+    var copyFileFunc = copyFileList[i];
+    copyFileFunc();
+  }
+
+}
+
+function createDirectories() {
+
+  for (var i = 0; i < filePaths.length; i++) {
+    var filePath = filePaths[i].split(source)[1];
+
+    filePath = filePath.split(/[\/\\]/);
+    filePath.pop();
+
+    var rootPath = destination;
+    for (let i = 1; i < filePath.length; i++) {
+      var pathFragment = filePath[i];
+      var pathName = path.join(rootPath, pathFragment);
+
+      rootPath = pathName;
+      if (fs.existsSync(pathName)) {
+        continue;
+      } else {
+        createFolder(pathName);
+      }
+    }
+  }
+}
 
 function createFolder(pathName) {
   console.log("Creating folder at " + pathName + " ...");
@@ -73,8 +105,13 @@ function copyFile(path) {
   var fileExists = fs.existsSync(destination + pathFragment) // Make sure file doesn't already exist in destination before writing.
 
   if (!fileExists) {
-    console.log("Writing " + destination + pathFragment + " ...");
-    fs.copyFileSync(path, destination + pathFragment);
+    console.log("Ready to write to " + destination + pathFragment + " ...");
+    copyFileList.push(() => {
+      console.log("Writing " + destination + pathFragment + " ...");
+      fs.copyFileSync(path, destination + pathFragment);
+      saveLog(path);
+    });
+
     return true;
   }
 
