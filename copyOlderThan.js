@@ -14,7 +14,7 @@ if (!fs.existsSync(destination)) {
   throw new Error("No such destination directory found as ''" + destination + "''");
 }
 
-const logFile = __dirname + "/log.text";
+const logFile = "log.txt";
 
 var dateObj = new Date(date);
 var youngestAllowedTime = dateObj.getTime();
@@ -54,14 +54,16 @@ for (var i = 0; i < filePaths.length; i++) {
 
 for (var i = 0; i < filePaths.length; i++) {
   let path = filePaths[i];
-  copyFile(path);
-  saveLog(path);
+  var copied = copyFile(path);
+  if (copied) {
+    saveLog(path);
+  }
 }
 
 return;
 
 function createFolder(pathName) {
-  console.log("would create folder at " + pathName);
+  //console.log("Creating folder at " + pathName + " ...");
   fs.mkdirSync(pathName);
 }
 
@@ -71,13 +73,16 @@ function copyFile(path) {
   var fileExists = fs.existsSync(destination + pathFragment) // Make sure file doesn't already exist in destination before writing.
 
   if (!fileExists) {
-    console.log("Writing " + destination + pathFragment + " ...");
+    //console.log("Writing " + destination + pathFragment + " ...");
     fs.copyFileSync(path, destination + pathFragment);
+    return true;
   }
+
+  return false;
 }
 
 function saveLog(path) {
-  // fs.writeFileSync(logFile, path);
+  fs.appendFileSync(logFile, new Date(Date.now()).toISOString() + " - " + "copied - " + path + "\r\n");
 }
 
 function readDir(pathName, files) {
